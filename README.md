@@ -1,7 +1,12 @@
 # gym-pybullet-drones-main
-Installation
+
+# Environmental Setup
+This project is operated under python structure with gymnasium as our simulation API. Our target is to build four quadrotors to complete a multi-uav-competition using RL.
+
+Pybullet Installation
 
 -Pybullet: https://deepakjogi.medium.com/how-to-install-pybullet-physics-simulation-in-windows-e1f16baa26f6
+
 -address:
 import sys
 sys.path.insert(0, 'address')
