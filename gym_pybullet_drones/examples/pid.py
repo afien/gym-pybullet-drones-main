@@ -27,7 +27,8 @@ import pybullet as p
 import matplotlib.pyplot as plt
 
 import sys
-sys.path.insert(0, 'C:/Users/benson/Desktop/vscode/gym-pybullet-drones-main/gym-pybullet-drones-main')
+# sys.path.insert(0, 'C:/Users/benson/Desktop/vscode/gym-pybullet-drones-main/gym-pybullet-drones-main')
+sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main')
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
 from gym_pybullet_drones.envs.CtrlAviary import CtrlAviary
 from gym_pybullet_drones.control.DSLPIDControl import DSLPIDControl
@@ -35,16 +36,16 @@ from gym_pybullet_drones.utils.Logger import Logger
 from gym_pybullet_drones.utils.utils import sync, str2bool
 
 DEFAULT_DRONES = DroneModel("cf2x")
-DEFAULT_NUM_DRONES = 3
+DEFAULT_NUM_DRONES = 4
 DEFAULT_PHYSICS = Physics("pyb")
 DEFAULT_GUI = True
 DEFAULT_RECORD_VISION = False
 DEFAULT_PLOT = True
-DEFAULT_USER_DEBUG_GUI = False
-DEFAULT_OBSTACLES = True
+DEFAULT_USER_DEBUG_GUI = True
+DEFAULT_OBSTACLES = False
 DEFAULT_SIMULATION_FREQ_HZ = 240
 DEFAULT_CONTROL_FREQ_HZ = 48
-DEFAULT_DURATION_SEC = 12
+DEFAULT_DURATION_SEC = 30
 DEFAULT_OUTPUT_FOLDER = 'results'
 DEFAULT_COLAB = False
 
