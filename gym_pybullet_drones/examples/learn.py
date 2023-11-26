@@ -21,7 +21,7 @@ import numpy as np
 from stable_baselines3 import PPO
 
 import sys
-sys.path.insert(0, 'C:/Users/benson/Desktop/vscode/gym-pybullet-drones-main/gym-pybullet-drones-main')
+sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main')
 from gym_pybullet_drones.utils.Logger import Logger
 from gym_pybullet_drones.envs.single_agent_rl.HoverAviary import HoverAviary
 from gym_pybullet_drones.utils.utils import sync, str2bool

@@ -16,7 +16,7 @@ import argparse
 import numpy as np
 
 import sys
-sys.path.insert(0, 'C:/Users/benson/Desktop/vscode/gym-pybullet-drones-main/gym-pybullet-drones-main')
+sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main')
 from gym_pybullet_drones.utils.utils import sync, str2bool
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
 from gym_pybullet_drones.envs.CtrlAviary import CtrlAviary
@@ -46,7 +46,7 @@ def run(
     #### Initialize the simulation #############################
     INIT_XYZS = np.array([[.5, 0, 1],[-.5, 0, .5]])
     env = CtrlAviary(drone_model=drone,
-                     num_drones=2,
+                     num_drones=4,
                      initial_xyzs=INIT_XYZS,
                      physics=Physics.PYB_DW,
                      neighbourhood_radius=10,
@@ -54,7 +54,7 @@ def run(
                      ctrl_freq=control_freq_hz,
                      gui=gui,
                      record=record_video,
-                     obstacles=True
+                     obstacles=False
                      )
 
     #### Initialize the trajectories ###########################
