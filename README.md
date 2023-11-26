@@ -5,3 +5,5 @@ Installation
 -address:
 import sys
 sys.path.insert(0, 'address')
+
+-github sync tutorial: https://jimmylab.wordpress.com/gp1015/git-github/vscode-github/
