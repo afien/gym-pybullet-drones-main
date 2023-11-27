@@ -14,7 +14,7 @@ import pybullet_data
 import gymnasium as gym
 
 import sys
-sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main')
+sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') #
 from gym_pybullet_drones.utils.enums import DroneModel, Physics, ImageType
 
 
