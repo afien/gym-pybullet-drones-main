@@ -11,10 +11,10 @@ import matplotlib.pyplot as plt
 
 import sys
 # note: your address might be different
-sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
-# sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
+# sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
-from gym_pybullet_drones.envs.VelocityAviary import VelocityAviary
+from gym_pybullet_drones.envs.CtrlAviary import CtrlAviary
 from gym_pybullet_drones.control.DSLPIDControl import DSLPIDControl
 from gym_pybullet_drones.utils.Logger import Logger
 from gym_pybullet_drones.utils.utils import sync, str2bool
@@ -85,7 +85,7 @@ def run(
     wp_counters = np.array([0 for i in range(num_drones)])
 
     #### Create the environment ################################
-    env = VelocityAviary(drone_model=drone,
+    env = CtrlAviary(drone_model=drone,
                         num_drones=num_drones,
                         initial_xyzs=INIT_XYZS,
                         initial_rpys=INIT_RPYS,
