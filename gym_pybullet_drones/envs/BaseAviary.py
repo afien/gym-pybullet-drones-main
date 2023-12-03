@@ -39,7 +39,8 @@ class BaseAviary(gym.Env):
                  obstacles=False,
                  user_debug_gui=True,
                  vision_attributes=False,
-                 output_folder='results'
+                 output_folder='results',
+                 drone_label: str = 'drone1'
                  ):
         """Initialization of a generic aviary environment.
 
@@ -96,6 +97,7 @@ class BaseAviary(gym.Env):
         self.USER_DEBUG = user_debug_gui
         self.URDF = self.DRONE_MODEL.value + ".urdf"
         self.OUTPUT_FOLDER = output_folder
+        self.DRONE_LABEL = drone_label
         #### Load the drone properties from the .urdf file #########
         self.M, \
         self.L, \
@@ -151,11 +153,14 @@ class BaseAviary(gym.Env):
         if self.GUI:
             #### With debug GUI ########################################
             self.CLIENT = p.connect(p.GUI) # p.connect(p.GUI, options="--opengl2")
+            # adjust background color
+            # self.CLIENT = p.connect(p.GUI, options='--background_color_red=1.0 --background_color_green=0.0 --background_color_blue=0.0')
             for i in [p.COV_ENABLE_RGB_BUFFER_PREVIEW, p.COV_ENABLE_DEPTH_BUFFER_PREVIEW, p.COV_ENABLE_SEGMENTATION_MARK_PREVIEW]:
                 p.configureDebugVisualizer(i, 0, physicsClientId=self.CLIENT)
-            p.resetDebugVisualizerCamera(cameraDistance=3,
+            # adjust camera angle
+            p.resetDebugVisualizerCamera(cameraDistance=1.5,
                                          cameraYaw=-30,
-                                         cameraPitch=-30,
+                                         cameraPitch=-20,
                                          cameraTargetPosition=[0, 0, 0],
                                          physicsClientId=self.CLIENT
                                          )
@@ -180,7 +185,7 @@ class BaseAviary(gym.Env):
                 self.VID_HEIGHT=int(480)
                 self.FRAME_PER_SEC = 24
                 self.CAPTURE_FREQ = int(self.PYB_FREQ/self.FRAME_PER_SEC)
-                self.CAM_VIEW = p.computeViewMatrixFromYawPitchRoll(distance=3,
+                self.CAM_VIEW = p.computeViewMatrixFromYawPitchRoll(distance=2,
                                                                     yaw=-30,
                                                                     pitch=-30,
                                                                     roll=0,

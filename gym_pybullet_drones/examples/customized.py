@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 
 import sys
 # note: your address might be different
-# sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
-sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
+sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+# sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
 from gym_pybullet_drones.envs.CtrlAviary import CtrlAviary
 from gym_pybullet_drones.control.DSLPIDControl import DSLPIDControl
@@ -32,6 +32,7 @@ DEFAULT_CONTROL_FREQ_HZ = 48
 DEFAULT_DURATION_SEC = 30
 DEFAULT_OUTPUT_FOLDER = 'results'
 DEFAULT_COLAB = False
+DEFAULT_LABELS = str('drone1')
 
 def run(
         drone=DEFAULT_DRONES,
@@ -46,7 +47,8 @@ def run(
         control_freq_hz=DEFAULT_CONTROL_FREQ_HZ,
         duration_sec=DEFAULT_DURATION_SEC,
         output_folder=DEFAULT_OUTPUT_FOLDER,
-        colab=DEFAULT_COLAB
+        colab=DEFAULT_COLAB,
+        labels=DEFAULT_LABELS
         ):
     #### Initialize the simulation #############################
     H = .1
@@ -65,23 +67,23 @@ def run(
 
     #### Debug trajectory ######################################
     #### Uncomment alt. target_pos in .computeControlFromState()
-    INIT_XYZS = np.array([[.3 * i, 0, .1] for i in range(num_drones)])
-    INIT_RPYS = np.array([[0, 0,  i * (np.pi/3)/num_drones] for i in range(num_drones)])
-    NUM_WP = control_freq_hz*15
-    TARGET_POS = np.zeros((NUM_WP,3))
-    for i in range(NUM_WP):
-        if i < NUM_WP/6:
-            TARGET_POS[i, :] = (i*6)/NUM_WP, 0, 0.5*(i*6)/NUM_WP
-        elif i < 2 * NUM_WP/6:
-            TARGET_POS[i, :] = 1 - ((i-NUM_WP/6)*6)/NUM_WP, 0, 0.5 - 0.5*((i-NUM_WP/6)*6)/NUM_WP
-        elif i < 3 * NUM_WP/6:
-            TARGET_POS[i, :] = 0, ((i-2*NUM_WP/6)*6)/NUM_WP, 0.5*((i-2*NUM_WP/6)*6)/NUM_WP
-        elif i < 4 * NUM_WP/6:
-            TARGET_POS[i, :] = 0, 1 - ((i-3*NUM_WP/6)*6)/NUM_WP, 0.5 - 0.5*((i-3*NUM_WP/6)*6)/NUM_WP
-        elif i < 5 * NUM_WP/6:
-            TARGET_POS[i, :] = ((i-4*NUM_WP/6)*6)/NUM_WP, ((i-4*NUM_WP/6)*6)/NUM_WP, 0.5*((i-4*NUM_WP/6)*6)/NUM_WP
-        elif i < 6 * NUM_WP/6:
-            TARGET_POS[i, :] = 1 - ((i-5*NUM_WP/6)*6)/NUM_WP, 1 - ((i-5*NUM_WP/6)*6)/NUM_WP, 0.5 - 0.5*((i-5*NUM_WP/6)*6)/NUM_WP
+    # INIT_XYZS = np.array([[.3 * i, 0, .1] for i in range(num_drones)])
+    # INIT_RPYS = np.array([[0, 0,  i * (np.pi/3)/num_drones] for i in range(num_drones)])
+    # NUM_WP = control_freq_hz*15
+    # TARGET_POS = np.zeros((NUM_WP,3))
+    # for i in range(NUM_WP):
+    #     if i < NUM_WP/6:
+    #         TARGET_POS[i, :] = (i*6)/NUM_WP, 0, 0.5*(i*6)/NUM_WP
+    #     elif i < 2 * NUM_WP/6:
+    #         TARGET_POS[i, :] = 1 - ((i-NUM_WP/6)*6)/NUM_WP, 0, 0.5 - 0.5*((i-NUM_WP/6)*6)/NUM_WP
+    #     elif i < 3 * NUM_WP/6:
+    #         TARGET_POS[i, :] = 0, ((i-2*NUM_WP/6)*6)/NUM_WP, 0.5*((i-2*NUM_WP/6)*6)/NUM_WP
+    #     elif i < 4 * NUM_WP/6:
+    #         TARGET_POS[i, :] = 0, 1 - ((i-3*NUM_WP/6)*6)/NUM_WP, 0.5 - 0.5*((i-3*NUM_WP/6)*6)/NUM_WP
+    #     elif i < 5 * NUM_WP/6:
+    #         TARGET_POS[i, :] = ((i-4*NUM_WP/6)*6)/NUM_WP, ((i-4*NUM_WP/6)*6)/NUM_WP, 0.5*((i-4*NUM_WP/6)*6)/NUM_WP
+    #     elif i < 6 * NUM_WP/6:
+    #         TARGET_POS[i, :] = 1 - ((i-5*NUM_WP/6)*6)/NUM_WP, 1 - ((i-5*NUM_WP/6)*6)/NUM_WP, 0.5 - 0.5*((i-5*NUM_WP/6)*6)/NUM_WP
     wp_counters = np.array([0 for i in range(num_drones)])
 
     #### Create the environment ################################
@@ -90,13 +92,14 @@ def run(
                         initial_xyzs=INIT_XYZS,
                         initial_rpys=INIT_RPYS,
                         physics=physics,
-                        neighbourhood_radius=5,
+                        neighbourhood_radius=10,
                         pyb_freq=simulation_freq_hz,
                         ctrl_freq=control_freq_hz,
                         gui=gui,
                         record=record_video,
                         obstacles=obstacles,
-                        user_debug_gui=user_debug_gui
+                        user_debug_gui=user_debug_gui,
+                        drone_label=labels
                         )
 
     #### Obtain the PyBullet Client ID from the environment ####
@@ -180,6 +183,7 @@ if __name__ == "__main__":
     parser.add_argument('--duration_sec',       default=DEFAULT_DURATION_SEC,         type=int,           help='Duration of the simulation in seconds (default: 5)', metavar='')
     parser.add_argument('--output_folder',     default=DEFAULT_OUTPUT_FOLDER, type=str,           help='Folder where to save logs (default: "results")', metavar='')
     parser.add_argument('--colab',              default=DEFAULT_COLAB, type=bool,           help='Whether example is being run by a notebook (default: "False")', metavar='')
+    parser.add_argument('--labels', default=DEFAULT_LABELS, type=str, help='name of the drone (default: drone1)', metavar='')
     ARGS = parser.parse_args()
 
     run(**vars(ARGS))
