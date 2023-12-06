@@ -4,6 +4,9 @@ import numpy as np
 from gymnasium import spaces
 import pybullet as p
 
+import sys
+sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+# sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.envs.BaseAviary import BaseAviary
 from gym_pybullet_drones.utils.enums import DroneModel, Physics, ImageType, ActionType, ObservationType
 from gym_pybullet_drones.control.DSLPIDControl import DSLPIDControl

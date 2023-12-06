@@ -158,9 +158,9 @@ class BaseAviary(gym.Env):
             for i in [p.COV_ENABLE_RGB_BUFFER_PREVIEW, p.COV_ENABLE_DEPTH_BUFFER_PREVIEW, p.COV_ENABLE_SEGMENTATION_MARK_PREVIEW]:
                 p.configureDebugVisualizer(i, 0, physicsClientId=self.CLIENT)
             # adjust camera angle
-            p.resetDebugVisualizerCamera(cameraDistance=1.5,
+            p.resetDebugVisualizerCamera(cameraDistance=1.0,
                                          cameraYaw=-30,
-                                         cameraPitch=-20,
+                                         cameraPitch=-30,
                                          cameraTargetPosition=[0, 0, 0],
                                          physicsClientId=self.CLIENT
                                          )

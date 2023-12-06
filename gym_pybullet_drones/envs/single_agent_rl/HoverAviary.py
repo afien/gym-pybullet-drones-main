@@ -1,5 +1,8 @@
 import numpy as np
 
+import sys
+sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+# sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
 from gym_pybullet_drones.envs.single_agent_rl.BaseSingleAgentAviary import ActionType, ObservationType, BaseSingleAgentAviary
 
