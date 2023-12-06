@@ -16,7 +16,8 @@ import argparse
 import numpy as np
 
 import sys
-sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main')
+# sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.utils import sync, str2bool
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
 from gym_pybullet_drones.envs.CtrlAviary import CtrlAviary
@@ -28,7 +29,7 @@ DEFAULT_GUI = True
 DEFAULT_RECORD_VIDEO = False
 DEFAULT_SIMULATION_FREQ_HZ = 240
 DEFAULT_CONTROL_FREQ_HZ = 48
-DEFAULT_DURATION_SEC = 12
+DEFAULT_DURATION_SEC = 10
 DEFAULT_OUTPUT_FOLDER = 'results'
 DEFAULT_COLAB = False
 
@@ -46,7 +47,7 @@ def run(
     #### Initialize the simulation #############################
     INIT_XYZS = np.array([[.5, 0, 1],[-.5, 0, .5]])
     env = CtrlAviary(drone_model=drone,
-                     num_drones=4,
+                     num_drones=2,
                      initial_xyzs=INIT_XYZS,
                      physics=Physics.PYB_DW,
                      neighbourhood_radius=10,

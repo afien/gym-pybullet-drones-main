@@ -35,8 +35,8 @@ from transforms3d.utils import normalized_vector
 
 import sys
 # note: your address might be different
-sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
-# sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
+# sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
 from gym_pybullet_drones.envs.BetaAviary import BetaAviary
 from gym_pybullet_drones.control.CTBRControl import CTBRControl

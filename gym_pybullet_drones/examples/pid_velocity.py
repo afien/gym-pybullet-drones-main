@@ -26,7 +26,8 @@ import matplotlib.pyplot as plt
 
 import sys
 # note: your address might be different
-sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main')
+# sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
 from gym_pybullet_drones.envs.CtrlAviary import CtrlAviary
 from gym_pybullet_drones.control.DSLPIDControl import DSLPIDControl
@@ -37,13 +38,13 @@ from gym_pybullet_drones.envs.VelocityAviary import VelocityAviary
 
 DEFAULT_DRONE = DroneModel("cf2x")
 DEFAULT_GUI = True
-DEFAULT_RECORD_VIDEO = False
+DEFAULT_RECORD_VIDEO = True
 DEFAULT_PLOT = True
 DEFAULT_USER_DEBUG_GUI = False
 DEFAULT_OBSTACLES = False
 DEFAULT_SIMULATION_FREQ_HZ = 240
 DEFAULT_CONTROL_FREQ_HZ = 48
-DEFAULT_DURATION_SEC = 20
+DEFAULT_DURATION_SEC = 10
 DEFAULT_OUTPUT_FOLDER = 'results'
 DEFAULT_COLAB = False
 
