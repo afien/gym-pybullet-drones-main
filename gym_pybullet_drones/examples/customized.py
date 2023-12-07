@@ -58,11 +58,18 @@ def run(
     INIT_RPYS = np.array([[0, 0,  i * (np.pi/2)/num_drones] for i in range(num_drones)])
 
     #### Initialize a circular trajectory ######################
-    PERIOD = 10
-    NUM_WP = control_freq_hz*PERIOD
+    # PERIOD = 10
+    # NUM_WP = control_freq_hz*PERIOD
+    # TARGET_POS = np.zeros((NUM_WP,3))
+    # for i in range(NUM_WP):
+    #     TARGET_POS[i, :] = R*np.cos((i/NUM_WP)*(2*np.pi)+np.pi/2)+INIT_XYZS[0, 0], R*np.sin((i/NUM_WP)*(2*np.pi)+np.pi/2)-R+INIT_XYZS[0, 1], 0
+    # wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP) for i in range(num_drones)])
+
+    #### Control Target Position ###############################
+    NUM_WP = 1
     TARGET_POS = np.zeros((NUM_WP,3))
     for i in range(NUM_WP):
-        TARGET_POS[i, :] = R*np.cos((i/NUM_WP)*(2*np.pi)+np.pi/2)+INIT_XYZS[0, 0], R*np.sin((i/NUM_WP)*(2*np.pi)+np.pi/2)-R+INIT_XYZS[0, 1], 0
+        TARGET_POS[i, :] = [-1, 1, 0]
     wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP) for i in range(num_drones)])
 
     #### Debug trajectory ######################################
