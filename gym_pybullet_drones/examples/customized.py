@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 
 import sys
 # note: your address might be different
-sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
-# sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
+# sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
 from gym_pybullet_drones.envs.CtrlAviary import CtrlAviary
 from gym_pybullet_drones.control.DSLPIDControl import DSLPIDControl
@@ -56,7 +56,7 @@ def run(
     R = .3
     # INIT_XYZS = np.array([[R*np.cos((i/6)*2*np.pi+np.pi/2), R*np.sin((i/6)*2*np.pi+np.pi/2)-R, H+i*H_STEP] for i in range(num_drones)])
     # INIT_RPYS = np.array([[0, 0,  i * (np.pi/2)/num_drones] for i in range(num_drones)])
-    INIT_XYZS = np.array([[0, 0.5*i, 0.5] for i in range(num_drones)])
+    INIT_XYZS = np.array([[0, 0.5*i, 0.3] for i in range(num_drones)])
     INIT_RPYS = np.array([[0, 0, 0],[0, 0, 0],[0, 0, 0]])
 
     #### Initialize a circular trajectory ######################
@@ -87,7 +87,7 @@ def run(
     # for i in range(NUM_WP):
     #     TARGET_POS[i, :] = ([0, -1, 1])
     # [0,-1,.3][1,-1,.2]
-    wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP) for i in range(num_drones)])
+    # wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP) for i in range(num_drones)])
     wp_counters = np.array([0 for i in range(num_drones)])
 
     #### Debug trajectory ######################################
@@ -138,8 +138,13 @@ def run(
                     )
 
     #### Initialize the controllers ############################
+    # if drone in [DroneModel.CF2X, DroneModel.CF2P]:
+    #     ctrl = [DSLPIDControl(drone_model=drone) for i in range(num_drones)]
+    ## New controller ####
     if drone in [DroneModel.CF2X, DroneModel.CF2P]:
-        ctrl = [DSLPIDControl(drone_model=drone) for i in range(num_drones)]
+        ctrl_1 = [DSLPIDControl(drone_model=drone)]
+        ctrl_2 = [DSLPIDControl(drone_model=drone)]
+        ctrl_3 = [DSLPIDControl(drone_model=drone)]
 
     #### Run the simulation ####################################
     action = np.zeros((num_drones,4))
@@ -162,19 +167,19 @@ def run(
         #                                                             )
             
         ## New Control ###
-        action[1, :], _, _ = ctrl[1].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
+        action[1, :], _, _ = ctrl_1[1].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
                                                         state=obs[1],
                                                         target_pos=INIT_XYZS[1, :] + TARGET_POS_1[wp_counters[1], :],
                                                         target_rpy=INIT_RPYS[1, :]
                                                         )
         
-        action[2, :], _, _ = ctrl[2].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
+        action[2, :], _, _ = ctrl_2[2].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
                                                 state=obs[2],
                                                 target_pos=INIT_XYZS[2, :] + TARGET_POS_2[wp_counters[2], :],
                                                 target_rpy=INIT_RPYS[2, :]
                                                 )
         
-        action[3, :], _, _ = ctrl[3].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
+        action[3, :], _, _ = ctrl_3[3].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
                                                 state=obs[3],
                                                 target_pos=INIT_XYZS[3, :] + TARGET_POS_3[wp_counters[3], :],
                                                 target_rpy=INIT_RPYS[3, :]
@@ -213,7 +218,7 @@ def run(
                     )
 
         #### Printout ##############################################
-        env.render()
+        # env.render()
 
         #### Sync the simulation ###################################
         if gui:
