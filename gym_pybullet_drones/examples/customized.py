@@ -51,13 +51,13 @@ def run(
         labels=DEFAULT_LABELS
         ):
     #### Initialize the simulation #############################
-    H = .1
-    H_STEP = .05
-    R = .3
+    # H = .1
+    # H_STEP = .05
+    # R = .3
     # INIT_XYZS = np.array([[R*np.cos((i/6)*2*np.pi+np.pi/2), R*np.sin((i/6)*2*np.pi+np.pi/2)-R, H+i*H_STEP] for i in range(num_drones)])
     # INIT_RPYS = np.array([[0, 0,  i * (np.pi/2)/num_drones] for i in range(num_drones)])
     INIT_XYZS = np.array([[0, 0.5*i, 0.3] for i in range(num_drones)])
-    INIT_RPYS = np.array([[0, 0, 0],[0, 0, 0],[0, 0, 0]])
+    INIT_RPYS = np.array([[i*0, 0, 0] for i in range(num_drones)])
 
     #### Initialize a circular trajectory ######################
     # PERIOD = 10
@@ -68,27 +68,38 @@ def run(
     # wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP) for i in range(num_drones)])
 
     #### Control Target Position ###############################
-    PERIOD = 10
-    # NUM_WP = control_freq_hz*PERIOD
-    NUM_WP = 5
-    # TARGET_POS = np.zeros((NUM_WP,3))
+    PERIOD = 15
+    NUM_WP = control_freq_hz*PERIOD
+
+    TARGET_POS = np.zeros((NUM_WP,3))
+    for i in range(NUM_WP):
+        if i<int(NUM_WP/4):
+            TARGET_POS[i,:] = ([0, -0.5, 1])
+        elif i<int(2*NUM_WP/4):
+            TARGET_POS[i,:] = ([0, -1, .5])
+        elif i<int(3*NUM_WP/4):
+            TARGET_POS[i,:] = ([1, -1, .3])
+        else:
+            TARGET_POS[i,:] = ([1, 0, 1])
 
     TARGET_POS_1 = np.zeros((NUM_WP,3))
+    for i in range(NUM_WP):
+        if i<int(NUM_WP/3):
+            TARGET_POS_1[i,:] = ([-0.5, 0, 1])
+        elif i<int(2*NUM_WP/3):
+            TARGET_POS_1[i,:] = ([-1, 0, .5])
+        else:
+            TARGET_POS_1[i,:] = ([-0.5, .5, 1])
+
     TARGET_POS_2 = np.zeros((NUM_WP,3))
-    TARGET_POS_3 = np.zeros((NUM_WP,3))
+    for i in range(NUM_WP):
+        if i<int(NUM_WP/2):
+            TARGET_POS_2[i,:] = ([-1, -1, .5])
+        else:
+            TARGET_POS_2[i,:] = ([-1, -0.5, 0.2])
 
-    for i in range(NUM_WP):
-        TARGET_POS_1[i, :] = ([0, -0.5, 1])
-    for i in range(NUM_WP):
-        TARGET_POS_2[i,:] = ([0, -1, 1])
-    for i in range(NUM_WP):
-        TARGET_POS_3[i,:] = ([0, -1, .5])
-
-    # for i in range(NUM_WP):
-    #     TARGET_POS[i, :] = ([0, -1, 1])
-    # [0,-1,.3][1,-1,.2]
-    # wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP) for i in range(num_drones)])
-    wp_counters = np.array([0 for i in range(num_drones)])
+    wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP) for i in range(num_drones)])
+    # wp_counters = np.array([0 for i in range(num_drones)])
 
     #### Debug trajectory ######################################
     #### Uncomment alt. target_pos in .computeControlFromState()
@@ -138,13 +149,8 @@ def run(
                     )
 
     #### Initialize the controllers ############################
-    # if drone in [DroneModel.CF2X, DroneModel.CF2P]:
-    #     ctrl = [DSLPIDControl(drone_model=drone) for i in range(num_drones)]
-    ## New controller ####
     if drone in [DroneModel.CF2X, DroneModel.CF2P]:
-        ctrl_1 = [DSLPIDControl(drone_model=drone)]
-        ctrl_2 = [DSLPIDControl(drone_model=drone)]
-        ctrl_3 = [DSLPIDControl(drone_model=drone)]
+        ctrl = [DSLPIDControl(drone_model=drone) for i in range(num_drones)]
 
     #### Run the simulation ####################################
     action = np.zeros((num_drones,4))
@@ -165,57 +171,40 @@ def run(
         #                                                             target_pos=INIT_XYZS[j, :] + TARGET_POS[wp_counters[j], :],
         #                                                             target_rpy=INIT_RPYS[j, :]
         #                                                             )
-            
-        ## New Control ###
-        action[1, :], _, _ = ctrl_1[1].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
-                                                        state=obs[1],
-                                                        target_pos=INIT_XYZS[1, :] + TARGET_POS_1[wp_counters[1], :],
-                                                        target_rpy=INIT_RPYS[1, :]
-                                                        )
-        
-        action[2, :], _, _ = ctrl_2[2].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
-                                                state=obs[2],
-                                                target_pos=INIT_XYZS[2, :] + TARGET_POS_2[wp_counters[2], :],
-                                                target_rpy=INIT_RPYS[2, :]
-                                                )
-        
-        action[3, :], _, _ = ctrl_3[3].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
-                                                state=obs[3],
-                                                target_pos=INIT_XYZS[3, :] + TARGET_POS_3[wp_counters[3], :],
-                                                target_rpy=INIT_RPYS[3, :]
-                                                )
 
+        ## New waypoint   
+        for j in range(num_drones):
+            if j==1:
+                action[j, :], _, _ = ctrl[j].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
+                                                                        state=obs[j],
+                                                                        target_pos=INIT_XYZS[j, :] + TARGET_POS[wp_counters[j], :],
+                                                                        target_rpy=INIT_RPYS[j, :]
+                                                                        )
+            elif j==2:
+                action[j, :], _, _ = ctrl[j].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
+                                                                        state=obs[j],
+                                                                        target_pos=INIT_XYZS[j, :] + TARGET_POS_1[wp_counters[j], :],
+                                                                        target_rpy=INIT_RPYS[j, :]
+                                                                        )
+            else:
+                action[j, :], _, _ = ctrl[j].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
+                                                                        state=obs[j],
+                                                                        target_pos=INIT_XYZS[j, :] + TARGET_POS_2[wp_counters[j], :],
+                                                                        target_rpy=INIT_RPYS[j, :]
+                                                                        )
+            
         #### Go to the next way point and loop #####################
         for j in range(num_drones):
             wp_counters[j] = wp_counters[j] + 1 if wp_counters[j] < (NUM_WP-1) else 0
 
         #### Log the simulation ####################################
-        # for j in range(num_drones):
-        #     logger.log(drone=j,
-        #                timestamp=i/env.CTRL_FREQ,
-        #                state=obs[j],
-        #             #    control=np.hstack([TARGET_POS[wp_counters[j], 0:2], INIT_XYZS[j, 2], INIT_RPYS[j, :], np.zeros(6)])
-        #                control=np.hstack([INIT_XYZS[j, :]+TARGET_POS[wp_counters[j], :], INIT_RPYS[j, :], np.zeros(6)])
-        #                )
-
-        ## New Simulation     
-        logger.log(drone=1,
-                    timestamp=i/env.CTRL_FREQ,
-                    state=obs[1],
-                    control=np.hstack([INIT_XYZS[1, :]+TARGET_POS_1[wp_counters[1], :], INIT_RPYS[1, :], np.zeros(6)])
-                    )
-            
-        logger.log(drone=2,
-                    timestamp=i/env.CTRL_FREQ,
-                    state=obs[2],
-                    control=np.hstack([INIT_XYZS[2, :]+TARGET_POS_2[wp_counters[2], :], INIT_RPYS[2, :], np.zeros(6)])
-                    )
-            
-        logger.log(drone=3,
-                    timestamp=i/env.CTRL_FREQ,
-                    state=obs[3],
-                    control=np.hstack([INIT_XYZS[3, :]+TARGET_POS_3[wp_counters[3], :], INIT_RPYS[3, :], np.zeros(6)])
-                    )
+        for j in range(num_drones):
+            logger.log(drone=j,
+                       timestamp=i/env.CTRL_FREQ,
+                       state=obs[j],
+                    #    control=np.hstack([TARGET_POS[wp_counters[j], 0:2], INIT_XYZS[j, 2], INIT_RPYS[j, :], np.zeros(6)])
+                       control=np.hstack([INIT_XYZS[j, :]+TARGET_POS[wp_counters[j], :], INIT_RPYS[j, :], np.zeros(6)])
+                       )
 
         #### Printout ##############################################
         # env.render()
