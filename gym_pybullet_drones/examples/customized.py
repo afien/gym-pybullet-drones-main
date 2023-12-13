@@ -29,7 +29,7 @@ DEFAULT_USER_DEBUG_GUI = True
 DEFAULT_OBSTACLES = False
 DEFAULT_SIMULATION_FREQ_HZ = 240
 DEFAULT_CONTROL_FREQ_HZ = 48
-DEFAULT_DURATION_SEC = 30
+DEFAULT_DURATION_SEC = 50
 DEFAULT_OUTPUT_FOLDER = 'results'
 DEFAULT_COLAB = False
 DEFAULT_LABELS = str('drone1')
@@ -93,10 +93,12 @@ def run(
 
     TARGET_POS_2 = np.zeros((NUM_WP,3))
     for i in range(NUM_WP):
-        if i<int(NUM_WP/2):
+        if i<int(NUM_WP/3):
             TARGET_POS_2[i,:] = ([-1, -1, .5])
-        else:
+        elif i<int(2*NUM_WP/3):
             TARGET_POS_2[i,:] = ([-1, -0.5, 0.2])
+        else:
+            TARGET_POS_2[i,:] = ([-0.5, -0.5, 0.3])
 
     wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP) for i in range(num_drones)])
     # wp_counters = np.array([0 for i in range(num_drones)])
