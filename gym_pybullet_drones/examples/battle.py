@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 
 import sys
 # note: your address might be different
-sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
-# sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
+# sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.enums import DroneModel, Physics
 from gym_pybullet_drones.envs.CtrlAviary import CtrlAviary
 from gym_pybullet_drones.control.DSLPIDControl import DSLPIDControl
@@ -51,7 +51,9 @@ def run(
         labels=DEFAULT_LABELS
         ):
     #### Initialize the simulation #############################
-    INIT_XYZS = np.array([[0,0,.3],[0,.5,.3],[0,1,.3],[1,0,.3],[1,.5,.3],[1,1,.3]])
+    INIT_XYZS = np.array([[0,0,.3],[0,.5,.3],[0,1,.3],[2,0,.3],[2,.5,.3],[2,1,.3]])
+    # [2, 3, 4, 5, 6, 1]
+    # INIT_XYZS = np.array([[0, 0, i*0.1] for i in range(num_drones)])
     INIT_RPYS = np.array([[i*0, 0, 0] for i in range(num_drones)])
 
     #### Control Target Position ###############################
@@ -60,27 +62,70 @@ def run(
 
     TARGET_POS = np.zeros((NUM_WP,3))
     for i in range(NUM_WP):
-        TARGET_POS[i,:] = [0,0,.3]
+        if i<int(NUM_WP/4):
+            TARGET_POS[i,:] = [.2,0,0]
+        elif i<int(2*NUM_WP/4):
+            TARGET_POS[i,:] = [.4,0,0]
+        elif i<int(3*NUM_WP/4):
+            TARGET_POS[i,:] = [.8,0,.2]
+        else:
+            TARGET_POS[i,:] = [2,0,.2]
     
     TARGET_POS_1 = np.zeros((NUM_WP,3))
     for i in range(NUM_WP):
-        TARGET_POS_1[i,:] = [0,.5,.3]
+        if i<int(NUM_WP/5):
+            TARGET_POS_1[i,:] = [0,.5,.3]
+        elif i<int(2*NUM_WP/5):
+            TARGET_POS_1[i,:] = [.1,.5,.5]
+        elif i<int(3*NUM_WP/5):
+            TARGET_POS_1[i,:] = [.2,.5,.7]
+        elif i<int(4*NUM_WP/5):
+            TARGET_POS_1[i,:] = [.3,.5,.3]
+        else:
+            TARGET_POS_1[i,:] = [.5,.5,.5]
 
     TARGET_POS_2 = np.zeros((NUM_WP,3))
     for i in range(NUM_WP):
-        TARGET_POS_2[i,:] = [0,1,.3]
+        if i<int(NUM_WP/5):
+            TARGET_POS_2[i,:] = [0,.5,.3]
+        elif i<int(2*NUM_WP/5):
+            TARGET_POS_2[i,:] = [.1,.5,.5]
+        elif i<int(3*NUM_WP/5):
+            TARGET_POS_2[i,:] = [.2,.5,.7]
+        elif i<int(4*NUM_WP/5):
+            TARGET_POS_2[i,:] = [.3,.5,.3]
+        else:
+            TARGET_POS_2[i,:] = [.5,.5,.5]
 
     TARGET_POS_3 = np.zeros((NUM_WP,3))
     for i in range(NUM_WP):
-        TARGET_POS_3[i,:] = [1,0,.3]
+        TARGET_POS_3[i,:] = [0,0,.2]
 
     TARGET_POS_4 = np.zeros((NUM_WP,3))
     for i in range(NUM_WP):
-        TARGET_POS_4[i,:] = [1,.5,.3]
+        if i<int(NUM_WP/5):
+            TARGET_POS_4[i,:] = [0,.5,.3]
+        elif i<int(2*NUM_WP/5):
+            TARGET_POS_4[i,:] = [.1,.5,.5]
+        elif i<int(3*NUM_WP/5):
+            TARGET_POS_4[i,:] = [.2,.5,.7]
+        elif i<int(4*NUM_WP/5):
+            TARGET_POS_4[i,:] = [.3,.5,.3]
+        else:
+            TARGET_POS_4[i,:] = [.5,.5,.5]
 
     TARGET_POS_5 = np.zeros((NUM_WP,3))
     for i in range(NUM_WP):
-        TARGET_POS_5[i,:] = [1,1,.3]
+        if i<int(NUM_WP/5):
+            TARGET_POS_5[i,:] = [0,.5,.3]
+        elif i<int(2*NUM_WP/5):
+            TARGET_POS_5[i,:] = [.1,.5,.5]
+        elif i<int(3*NUM_WP/5):
+            TARGET_POS_5[i,:] = [.2,.5,.7]
+        elif i<int(4*NUM_WP/5):
+            TARGET_POS_5[i,:] = [.3,.5,.3]
+        else:
+            TARGET_POS_5[i,:] = [.5,.5,.5]
 
     wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP) for i in range(num_drones)])
     # wp_counters = np.array([0 for i in range(num_drones)])
