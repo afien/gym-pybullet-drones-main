@@ -20,11 +20,11 @@ import gymnasium as gym
 import numpy as np
 from stable_baselines3 import PPO
 
-import tensorflow as tf
+import torch
 import sys
 # sys.path.insert(0, '/content/gym-pybullet-drones-main') # for colab
-sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
-# sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
+# sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.Logger import Logger
 from gym_pybullet_drones.envs.single_agent_rl.HoverAviary import HoverAviary
 from gym_pybullet_drones.utils.utils import sync, str2bool
@@ -43,12 +43,14 @@ def run(output_folder=DEFAULT_OUTPUT_FOLDER, gui=DEFAULT_GUI, plot=True, colab=D
 
     #### Train the model #######################################
     # Check GPU Availability
-    print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    print(device)
     model = PPO("MlpPolicy",
                 env,
+                device=device,
                 verbose=1
                 )
-    model.learn(total_timesteps=25000) # Typically not enough
+    model.learn(total_timesteps=1000000) # Typically not enough
 
     #### Show (and record a video of) the model's performance ##
     env = HoverAviary(gui=gui,
