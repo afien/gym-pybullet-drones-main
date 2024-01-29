@@ -15,6 +15,8 @@ class HoverAviary(BaseSingleAgentAviary):
                  drone_model: DroneModel=DroneModel.CF2X,
                  initial_xyzs=None,
                  initial_rpys=None,
+                #  initial_xyzs=np.array([[0,0,0]]),
+                #  initial_rpys=np.array([[0,0,0]]),
                  physics: Physics=Physics.PYB,
                  pyb_freq: int = 240,
                  ctrl_freq: int = 240,
