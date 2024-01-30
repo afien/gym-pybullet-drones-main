@@ -23,8 +23,8 @@ from stable_baselines3 import PPO
 import torch
 import sys
 # sys.path.insert(0, '/content/gym-pybullet-drones-main') # for colab
-sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
-# sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
+# sys.path.insert(0, 'C:/Users/USER/gym-pybullet-drones-main') # for my laptop
+sys.path.insert(0, 'C:/Users/benson/gym-pybullet-drones-main') # for 5892
 from gym_pybullet_drones.utils.Logger import Logger
 from gym_pybullet_drones.envs.single_agent_rl.HoverAviary import HoverAviary
 from gym_pybullet_drones.utils.utils import sync, str2bool
@@ -51,6 +51,7 @@ def run(output_folder=DEFAULT_OUTPUT_FOLDER, gui=DEFAULT_GUI, plot=True, colab=D
                 verbose=1
                 )
     model.learn(total_timesteps=10000) # Typically not enough (2000 = 1epoch)
+    model.save("ppo_singleAgent")
 
     #### Show (and record a video of) the model's performance ##
     env = HoverAviary(gui=gui,
@@ -61,6 +62,7 @@ def run(output_folder=DEFAULT_OUTPUT_FOLDER, gui=DEFAULT_GUI, plot=True, colab=D
                     output_folder=output_folder,
                     colab=colab
                     )
+    model = PPO.load("ppo_singleAgent")
     obs, info = env.reset(seed=42, options={})
     start = time.time()
     for i in range(3*env.CTRL_FREQ):
@@ -82,7 +84,6 @@ def run(output_folder=DEFAULT_OUTPUT_FOLDER, gui=DEFAULT_GUI, plot=True, colab=D
 
     logger.save()
     logger.save_as_csv("singleAgent")
-
     if plot:
         logger.plot()
 
