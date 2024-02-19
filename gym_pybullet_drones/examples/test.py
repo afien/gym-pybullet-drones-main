@@ -1,22 +1,22 @@
-# import random
-# import gymnasium as gym
+import random
+import gymnasium as gym
 
-# env = gym.make("CartPole-v1", render_mode="human")
-# episodes = 10
-# for episode in range(1, episodes+1):
-#     observation, info = env.reset()
-#     terminated = False
-#     score = 0
+env = gym.make("CartPole-v1", render_mode="human")
+episodes = 20
+for episode in range(1, episodes+1):
+    observation, info = env.reset()
+    terminated = False
+    score = 0
     
-#     while not terminated:
-#         action = random.choice([0, 1])
-#         observation, reward, terminated, truncated, info = env.step(action)
-#         score += reward
-#         env.render()
+    while not terminated:
+        action = random.choice([0, 1])
+        observation, reward, terminated, truncated, info = env.step(action)
+        score += reward
+        env.render()
 
-#     print(f"Episode {episode}, score: {score}")
+    print(f"Episode {episode}, score: {score}")
 
-# env.close()
+env.close()
 
 
 # import gymnasium as gym
@@ -41,36 +41,42 @@
 #     env.render()
 
 
-import gymnasium as gym
-from stable_baselines3 import PPO
-from stable_baselines3.common.vec_env.dummy_vec_env import DummyVecEnv
+# import gymnasium as gym
+# from stable_baselines3 import PPO
+# from stable_baselines3.common.vec_env.dummy_vec_env import DummyVecEnv
 
-env_name = "LunarLander-v2"
-env = gym.make(env_name)
-env = DummyVecEnv([lambda : env])
+# env_name = "LunarLander-v2"
+# env = gym.make(env_name)
+# env = DummyVecEnv([lambda : env])
 
-model = PPO("MlpPolicy",
-            env=env,
-            batch_size=64,
-            gae_lambda=0.98,
-            gamma=0.999,
-            n_epochs=4,
-            ent_coef=0.01,
-            verbose=1,
-            tensorboard_log="./tensorboard/LunarLander-v2/")
+# model = PPO("MlpPolicy",
+#             env=env,
+#             batch_size=64,
+#             gae_lambda=0.98,
+#             gamma=0.999,
+#             n_epochs=4,
+#             ent_coef=0.01,
+#             verbose=1,
+#             tensorboard_log="./tensorboard/LunarLander-v2/")
 
-model.learn(total_timesteps=10000)
-model.save("./model/LunarLander_PPO.pk1")
+# model.learn(total_timesteps=10000)
+# model.save("./model/LunarLander_PPO.pk1")
 
-env = gym.make(env_name)
-model = PPO.load("./model/LunarLander_PPO.pk1")
-state = env.reset()
-done = False
-score = 0
-while not done:
-    action,_ = model.predict(observation=state)
-    state, reward, done, info = env.step(action=action)
-    score += reward
-    env.render()
-env.close()
-print(score)
+# env = gym.make(env_name)
+# model = PPO.load("./model/LunarLander_PPO.pk1")
+# state = env.reset()
+# done = False
+# score = 0
+# while not done:
+#     action,_ = model.predict(observation=state)
+#     state, reward, done, info = env.step(action=action)
+#     score += reward
+#     env.render()
+# env.close()
+# print(score)
+
+# import numpy as np
+
+# a = np.hstack([[2, 2, 1], [2, 5, 7, 9], [10, 11, 12]])
+# print(a[0:3])
+# print(-1 * np.linalg.norm(np.array([0, 0, 1])-a[0:3])**2)
