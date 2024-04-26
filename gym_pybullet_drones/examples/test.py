@@ -1,22 +1,22 @@
-import random
-import gymnasium as gym
-
-env = gym.make("CartPole-v1", render_mode="human")
-episodes = 20
-for episode in range(1, episodes+1):
-    observation, info = env.reset()
-    terminated = False
-    score = 0
-    
-    while not terminated:
-        action = random.choice([0, 1])
-        observation, reward, terminated, truncated, info = env.step(action)
-        score += reward
-        env.render()
-
-    print(f"Episode {episode}, score: {score}")
-
-env.close()
+# import random
+# import gymnasium as gym
+#
+# env = gym.make("CartPole-v1", render_mode="human")
+# episodes = 20
+# for episode in range(1, episodes+1):
+#     observation, info = env.reset()
+#     terminated = False
+#     score = 0
+#
+#     while not terminated:
+#         action = random.choice([0, 1])
+#         observation, reward, terminated, truncated, info = env.step(action)
+#         score += reward
+#         env.render()
+#
+#     print(f"Episode {episode}, score: {score}")
+#
+# env.close()
 
 
 # import gymnasium as gym
